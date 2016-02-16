@@ -12,7 +12,7 @@ class block_report4 extends block_base {
       $array = explode('_',$COURSE->shortname);
       $showrecords = '';
       $context = context_course::instance($COURSE->id);
-      $urlreporte = new moodle_url('/blocks/report4/reporte3.php',array('context_id'=>$this->context->id));
+      $urlreporte = new moodle_url('/blocks/report4/reporte3.php');
       $url = new moodle_url('/blocks/report4/reporte3.php');
       $showrecords.=html_writer::link($urlreporte,'reporte');
       $this->content->text   = $showrecords;

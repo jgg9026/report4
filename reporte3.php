@@ -2,47 +2,57 @@
   require_once('../../config.php'); 
   require_once('report3_form.php');
   require_once('Student.php');
-  GLOBAL $DB, $COURSE;
+  GLOBAL $DB, $COURSE, $CFG;
+  //print_object($CFG->prefix);
 
   $id = optional_param('id', 0, PARAM_INT);
   $selected = optional_param('selected', '', PARAM_TEXT);
-  $contextid = required_param('context_id',PARAM_INT);
+  //$contextid = required_param('context_id',PARAM_INT);
   require_login();
-  $PAGE->set_context(context::instance_by_id($contextid));
-  $PAGE->set_title('Reporte');
+  $PAGE->set_context(context_system::instance());
+  //$PAGE->set_context(context::instance_by_id($contextid));
+  $PAGE->set_title('Reporte 4');
   $PAGE->set_url('/blocks/report4/reporte3.php');
   $PAGE->requires->jquery();
   $urljs = new moodle_url('/blocks/report4/amd/src/hello.js');
   $PAGE->requires->js($urljs);
+  if($selected=='')
+  {
+    $id=0;
+  }
+  else
+  {
+    $id=1;
+  }
   if($id!=0){
       // echo('el valor de select:');
       // print_object($selected);
       $category = '%'.$selected.'%';
-      $results = $DB->get_records_sql('SELECT mdl_grade_grades.id,mdl_user.id as student_id,
-           mdl_user.firstname, mdl_user.lastname,mdl_course.fullname as course_name, 
-           mdl_course.id as course_id,
-           mdl_grade_items.itemname, mdl_grade_grades.finalgrade 
-           FROM mdl_course, mdl_context, mdl_role_assignments, mdl_role, 
-           mdl_user, mdl_grade_items, mdl_grade_grades, mdl_course_categories 
-           WHERE mdl_context.instanceid = mdl_course.id 
-           and mdl_course.id = mdl_grade_items.courseid 
-           AND mdl_context.id = mdl_role_assignments.contextid 
-           AND mdl_role.id = mdl_role_assignments.roleid 
-           and mdl_course_categories.id = mdl_course.category
-           and mdl_course_categories.name like ?
-           and mdl_role.id = 5 
-           AND mdl_user.id = mdl_role_assignments.userid 
-           and mdl_user.id=mdl_grade_grades.userid 
-           and mdl_grade_items.id = mdl_grade_grades.itemid    
-           order by mdl_user.lastname ASC
-           , mdl_grade_items.itemname ASC', array($category));
+      $results = $DB->get_records_sql("SELECT {$CFG->prefix}grade_grades.id,{$CFG->prefix}user.id as student_id,
+           {$CFG->prefix}user.firstname, {$CFG->prefix}user.lastname,{$CFG->prefix}course.fullname as course_name, 
+           {$CFG->prefix}course.id as course_id,
+           {$CFG->prefix}grade_items.itemname, {$CFG->prefix}grade_grades.finalgrade 
+           FROM {$CFG->prefix}course, {$CFG->prefix}context, {$CFG->prefix}role_assignments, {$CFG->prefix}role, 
+           {$CFG->prefix}user, {$CFG->prefix}grade_items, {$CFG->prefix}grade_grades, {$CFG->prefix}course_categories 
+           WHERE {$CFG->prefix}context.instanceid = {$CFG->prefix}course.id 
+           and {$CFG->prefix}course.id = {$CFG->prefix}grade_items.courseid 
+           AND {$CFG->prefix}context.id = {$CFG->prefix}role_assignments.contextid 
+           AND {$CFG->prefix}role.id = {$CFG->prefix}role_assignments.roleid 
+           and {$CFG->prefix}course_categories.id = {$CFG->prefix}course.category
+           and {$CFG->prefix}course_categories.name like ?
+           and {$CFG->prefix}role.id = 5 
+           AND {$CFG->prefix}user.id = {$CFG->prefix}role_assignments.userid 
+           and {$CFG->prefix}user.id={$CFG->prefix}grade_grades.userid 
+           and {$CFG->prefix}grade_items.id = {$CFG->prefix}grade_grades.itemid    
+           order by {$CFG->prefix}user.lastname ASC
+           , {$CFG->prefix}grade_items.itemname ASC", array($category));
   //print_object($results);
   }
   $url = new moodle_url('/course/view.php', array('id' => 9));  
   $simplehtml = new report3_form();
-  $toform['context_id']=$contextid;
+  //$toform['context_id']=$contextid;
   //$toform['selected']=$selected;
-  $simplehtml->set_data($toform);
+  //$simplehtml->set_data($toform);
   echo $OUTPUT->header();
   if($simplehtml->is_cancelled())
   {
@@ -53,17 +63,17 @@
     $fromform=$simplehtml->get_data();
     // print_object($fromform);
     // $parametro= '%'.$fromform->filtro1.'%';
-    // $cursos=$DB->get_records_sql('SELECT mdl_course.id, mdl_course.fullname, 
-    //   COUNT(DISTINCT mdl_user.id ) AS users 
-    //   FROM mdl_course, mdl_context, mdl_role_assignments, mdl_role, mdl_user 
-    //   WHERE mdl_context.instanceid = mdl_course.id 
-    //   AND mdl_context.id = mdl_role_assignments.contextid 
-    //   AND mdl_role.id = mdl_role_assignments.roleid 
-    //   AND mdl_user.id = mdl_role_assignments.userid 
-    //   and mdl_course.fullname like ? GROUP BY mdl_course.id', array($parametro));
+    // $cursos=$DB->get_records_sql('SELECT {$CFG->prefix}course.id, {$CFG->prefix}course.fullname, 
+    //   COUNT(DISTINCT {$CFG->prefix}user.id ) AS users 
+    //   FROM {$CFG->prefix}course, {$CFG->prefix}context, {$CFG->prefix}role_assignments, {$CFG->prefix}role, {$CFG->prefix}user 
+    //   WHERE {$CFG->prefix}context.instanceid = {$CFG->prefix}course.id 
+    //   AND {$CFG->prefix}context.id = {$CFG->prefix}role_assignments.contextid 
+    //   AND {$CFG->prefix}role.id = {$CFG->prefix}role_assignments.roleid 
+    //   AND {$CFG->prefix}user.id = {$CFG->prefix}role_assignments.userid 
+    //   and {$CFG->prefix}course.fullname like ? GROUP BY {$CFG->prefix}course.id', array($parametro));
     // foreach ($cursos as $curso)
     // {
-     $reporteurl = new moodle_url('/blocks/report4/reporte3.php', array('id'=>1, 'context_id'=>$contextid, 'selected'=>$selected));
+     $reporteurl = new moodle_url('/blocks/report4/reporte3.php', array('id'=>$id,'selected'=>$selected));
      redirect($reporteurl);
     //   $reporte=html_writer::link($reporteurl,$curso->fullname);
     //   print_r($reporte);
@@ -79,24 +89,26 @@
     {
       $students = array();
       $courses = array();
+      $path = '';
       //Obtener el nombre de todos los cursos de esa categoria
-      $setcourses = $DB->get_records_sql('SELECT mdl_course.id, mdl_course.fullname 
-        FROM mdl_course, mdl_course_categories 
-        where mdl_course_categories.id = mdl_course.category 
-        and mdl_course_categories.name like ?', array($category));      
+      $setcourses = $DB->get_records_sql("SELECT {$CFG->prefix}course.id, {$CFG->prefix}course.fullname, {$CFG->prefix}course_categories.path 
+        FROM {$CFG->prefix}course, {$CFG->prefix}course_categories 
+        where {$CFG->prefix}course_categories.id = {$CFG->prefix}course.category 
+        and {$CFG->prefix}course_categories.name like ?", array($category));      
       //print_object($setcourses);
       //Obtener todos los alumnos de los diversos cursos
       foreach ($setcourses as $idcourse => $course)
       {
         $courses[$idcourse]=array();
-        $studentscourse = $DB->get_records_sql('SELECT DISTINCT mdl_user.id AS userid, 
-            mdl_user.lastname, mdl_user.firstname
-            FROM mdl_course, mdl_context, mdl_role_assignments, mdl_role, mdl_user
-            WHERE mdl_context.instanceid = mdl_course.id
-            AND mdl_context.id = mdl_role_assignments.contextid
-            AND mdl_role_assignments.roleid = 5
-            AND mdl_user.id = mdl_role_assignments.userid
-            AND mdl_course.id = ?',array($idcourse));        
+        $path = $course->path;
+        $studentscourse = $DB->get_records_sql("SELECT DISTINCT {$CFG->prefix}user.id AS userid, 
+            {$CFG->prefix}user.lastname, {$CFG->prefix}user.firstname
+            FROM {$CFG->prefix}course, {$CFG->prefix}context, {$CFG->prefix}role_assignments, {$CFG->prefix}role, {$CFG->prefix}user
+            WHERE {$CFG->prefix}context.instanceid = {$CFG->prefix}course.id
+            AND {$CFG->prefix}context.id = {$CFG->prefix}role_assignments.contextid
+            AND {$CFG->prefix}role_assignments.roleid = 5
+            AND {$CFG->prefix}user.id = {$CFG->prefix}role_assignments.userid
+            AND {$CFG->prefix}course.id = ?",array($idcourse));        
         foreach ($studentscourse as $idstudent => $student)
         {
           $courses[$idcourse][$idstudent] = new Student($student->firstname,
@@ -124,11 +136,26 @@
 
       }      
       //Impresion de la informacion
+      //Generar el path
+      $strpath = '';
+      $arraypath = explode('/',$path);
+      //print_object($path);
+      //print_object($arraypath);
+      for($i = 1; $i < count($arraypath);$i++){
+        $nameparent = $DB->get_record_sql('SELECT mdl_course_categories.name 
+          from mdl_course_categories 
+          where mdl_course_categories.id = ?',array($arraypath[$i]));
+        $strpath.=$nameparent->name;     
+        if($i!=count($arraypath)-1){
+          $strpath.='/';     
+        }
+      }
+      echo html_writer::tag('h3',$strpath);
       foreach($courses as $courseid => $students)
       {
-        $tasks=$DB->get_records_sql('SELECT mdl_grade_items.itemname 
-            FROM mdl_grade_items 
-            WHERE mdl_grade_items.courseid = ?',array($courseid)); 
+        $tasks=$DB->get_records_sql("SELECT {$CFG->prefix}grade_items.itemname 
+            FROM {$CFG->prefix}grade_items 
+            WHERE {$CFG->prefix}grade_items.courseid = ?",array($courseid)); 
         //----Construyendo la tabla
         echo html_writer::tag('h2',$setcourses[$courseid]->fullname,array());
         $table = new html_table();

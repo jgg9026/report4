@@ -1,6 +1,6 @@
 <?php
 require_once('../../config.php');
- global $DB;
+ global $DB, $CFG;
  $records = $DB->get_records('user');
  
 

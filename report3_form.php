@@ -19,8 +19,8 @@
 
 
 
-        $mform->addElement('hidden', 'context_id');
-        $mform->setType('context_id', PARAM_TEXT);
+        //$mform->addElement('hidden', 'context_id');
+        //$mform->setType('context_id', PARAM_TEXT);
         $this->add_action_buttons();
       
   }
