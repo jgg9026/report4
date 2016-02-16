@@ -18,14 +18,16 @@ $(document).ready(function(){
                 contenido= response;
                 contenido = contenido.replace('[','');
                 contenido = contenido.replace(']','');
-                contenido = contenido.replace('"','');
-                contenido = contenido.replace('"','');
+                // contenido = contenido.replace('"','');
+                // contenido = contenido.replace('"','');
                 var res = contenido.split(",");
                 console.log(res[0]);
 
                 $('#id_paralelo').find('option').remove().end().append('<option value="0">Seleccione un componente</option>').val('0');
                 $.each(res, function (i, item) {
                     //res[i].replace('"');
+                    res[i]=res[i].replace('"','');
+                    res[i]=res[i].replace('"','');
                     console.log(res[i]);
                     $('#id_paralelo').append($('<option>', {value: res[i],text : res[i] }));
                 });
