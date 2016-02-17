@@ -1,6 +1,6 @@
 <?php
   require_once('../../config.php'); 
-  require_once('report3_form.php');
+  require_once('report4_form.php');
   require_once('Student.php');
   GLOBAL $DB, $COURSE, $CFG;
   //print_object($CFG->prefix);
@@ -12,7 +12,7 @@
   $PAGE->set_context(context_system::instance());
   //$PAGE->set_context(context::instance_by_id($contextid));
   $PAGE->set_title('Reporte 4');
-  $PAGE->set_url('/blocks/report4/reporte3.php');
+  $PAGE->set_url('/blocks/report4/reporte4.php');
   $PAGE->requires->jquery();
   $urljs = new moodle_url('/blocks/report4/amd/src/hello.js');
   $PAGE->requires->js($urljs);
@@ -49,7 +49,7 @@
   //print_object($results);
   }
   $url = new moodle_url('/course/view.php', array('id' => 9));  
-  $simplehtml = new report3_form();
+  $simplehtml = new report4_form();
   //$toform['context_id']=$contextid;
   //$toform['selected']=$selected;
   //$simplehtml->set_data($toform);
@@ -73,7 +73,7 @@
     //   and {$CFG->prefix}course.fullname like ? GROUP BY {$CFG->prefix}course.id', array($parametro));
     // foreach ($cursos as $curso)
     // {
-     $reporteurl = new moodle_url('/blocks/report4/reporte3.php', array('id'=>$id,'selected'=>$selected));
+     $reporteurl = new moodle_url('/blocks/report4/reporte4.php', array('id'=>$id,'selected'=>$selected));
      redirect($reporteurl);
     //   $reporte=html_writer::link($reporteurl,$curso->fullname);
     //   print_r($reporte);

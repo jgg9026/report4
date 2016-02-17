@@ -49,6 +49,7 @@ $(document).ready(function(){
     $("#id_paralelo").change(function(){
             var value= $("#id_paralelo").val();
             $('input[name=selected]').attr('value', $("#id_paralelo").val());
+            $('#mform1').submit();
             //$('#id_paralelo').val();
             //alert($('input[name=selected]').val());
            // alert($('input[name=selected]').val());

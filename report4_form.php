@@ -3,7 +3,7 @@
   require_once("$CFG->libdir/formslib.php");
 
  
-  class report3_form extends moodleform {
+  class report4_form extends moodleform {
  
     function definition() {
  
@@ -21,7 +21,8 @@
 
         //$mform->addElement('hidden', 'context_id');
         //$mform->setType('context_id', PARAM_TEXT);
-        $this->add_action_buttons();
+        //$this->add_action_buttons();
+        $mform->disable_form_change_checker();
       
   }
 }
