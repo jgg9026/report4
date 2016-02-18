@@ -12,4 +12,4 @@ require_once('../../config.php');
   {
     array_push($datos,$curso->name);
   }
-  echo json_encode($datos);
+  echo json_encode($datos, JSON_UNESCAPED_UNICODE);

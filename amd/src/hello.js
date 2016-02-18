@@ -16,6 +16,7 @@ $(document).ready(function(){
         success:  function (response) {
                 $("#resultado").html(response);
                 contenido= response;
+                console.log(contenido);
                 contenido = contenido.replace('[','');
                 contenido = contenido.replace(']','');
                 // contenido = contenido.replace('"','');
