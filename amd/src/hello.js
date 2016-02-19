@@ -4,8 +4,11 @@ $(document).ready(function(){
         var path = '';
     //Load periods for initial display
     function load_periodos(){
+        var param = {'0': 2,'1': 0, '2':0};
+        console.log(param);
          $.ajax({
-            url:   'periodo.php',
+            data:  param,
+            url:   'consulta.php',
             type:  'post',
             success:  function (response) {
                     console.log('periodos en js:');
@@ -18,12 +21,12 @@ $(document).ready(function(){
                         
                         $('#id_period').append($('<option>', {value: periods[i].id,text : periods[i].name }));
                     });
-
                 }
             });
     }
     //Request variants and charge period id value
     $("#id_period").change(function(){
+        path='';
         console.log('id periodo');
         console.log($("#id_period").val());
         $('input[name=selected_period]').attr('value', $("#id_period").val());
@@ -31,9 +34,11 @@ $(document).ready(function(){
                 $('#id_variant').find('option').remove().end().append('<option value="0">Seleccione un componente</option>').val(null);
                 path ='/'.concat($("#id_period").val());
                 console.log(path);
+                var param = {'0': 1,'1': $("#id_period").val(), '2':0};
+                console.log(param);
             $.ajax({
-                data: period_val,
-                url:   'variante.php',
+                data: param,
+                url:   'consulta.php',
                 type:  'post',
                 success:  function (response)
                 {
@@ -53,8 +58,13 @@ $(document).ready(function(){
         console.log('id variante');
         console.log($("#id_variant").val());
         $('input[name=selected_variant]').attr('value', $("#id_variant").val());
-        path=path.concat('/');
-        path=path.concat($("#id_variant").val());
+        path='/'.concat($("#id_period").val());
+        if($("#id_variant").val()!=0)
+        {
+            path=path.concat('/');
+            path=path.concat($("#id_variant").val());
+        }
+        
         console.log(path);
     });
     var contenido;
@@ -95,7 +105,7 @@ $(document).ready(function(){
         
     }
     $('#id_filtro1').keyup(function(event) {
-        var param = {'1': $('#id_filtro1').val(), '2':path};
+        var param = {'0': 0,'1': $('#id_filtro1').val(), '2':path};
         console.log(param);
         console.log('valor del campo');
         console.log(param['1']);
