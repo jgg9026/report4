@@ -6,7 +6,9 @@
   //print_object($CFG->prefix);
 
   $id = optional_param('id', 0, PARAM_INT);
-  $selected = optional_param('selected', '', PARAM_TEXT);
+  $selected = optional_param('selected', '', PARAM_TEXT);//component
+  $selected_period = optional_param('selected_period','',PARAM_INT);
+  $selected_variant = optional_param('selected_variant','', PARAM_INT);
   //$contextid = required_param('context_id',PARAM_INT);
   require_login();
   $PAGE->set_context(context_system::instance());
@@ -27,6 +29,10 @@
   if($id!=0){
       // echo('el valor de select:');
       // print_object($selected);
+    echo('periodo');
+    print_r($selected_period);
+    echo('variant');
+    print_r($selected_variant);
       $category = '%'.$selected.'%';
       $results = $DB->get_records_sql("SELECT {$CFG->prefix}grade_grades.id,{$CFG->prefix}user.id as student_id,
            {$CFG->prefix}user.firstname, {$CFG->prefix}user.lastname,{$CFG->prefix}course.fullname as course_name, 

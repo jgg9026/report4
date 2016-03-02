@@ -44,7 +44,7 @@ $(document).ready(function(){
                 {
                         console.log('variantes en js:');
                         console.log(response);
-                        var variants = jQuery.parseJSON(response);;
+                        var variants = jQuery.parseJSON(response);
                         console.log(variants);
                         $.each(variants, function (i, item) {
                         $('#id_variant').append($('<option>', {value: variants[i].id,text : variants[i].name }));
@@ -82,21 +82,11 @@ $(document).ready(function(){
         },
         success:  function (response) {
                 $("#resultado").html(response);
-                contenido= response;
-                console.log(contenido);
-                contenido = contenido.replace('[','');
-                contenido = contenido.replace(']','');
-                // contenido = contenido.replace('"','');
-                // contenido = contenido.replace('"','');
-                var res = contenido.split(",");
-                console.log(res[0]);
+                var res = jQuery.parseJSON(response);
+                console.log(res);
 
                 $('#id_paralelo').find('option').remove().end().append('<option value="0">Seleccione un componente</option>').val('0');
                 $.each(res, function (i, item) {
-                    //res[i].replace('"');
-                    res[i]=res[i].replace('"','');
-                    res[i]=res[i].replace('"','');
-                    console.log(res[i]);
                     $('#id_paralelo').append($('<option>', {value: res[i],text : res[i] }));
                 });
 
@@ -113,9 +103,9 @@ $(document).ready(function(){
        
     });
     $("#id_paralelo").change(function(){
-            var value= $("#id_paralelo").val();
+            // var value= $("#id_paralelo").val();
             $('input[name=selected]').attr('value', $("#id_paralelo").val());
-            $('#mform1').submit();
+            // $('#mform1').submit();
         }); 
     function myfunction(){
         console.log('ola k ace');
